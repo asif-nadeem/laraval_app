@@ -34,4 +34,6 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+
+
 Route::resource('categories', App\Http\Controllers\CategoryController::class);//->name('index','categories');
