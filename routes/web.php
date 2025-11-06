@@ -31,9 +31,13 @@ Route::middleware(['web'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+        ///Route::get('/categories/index', [App\Http\Controllers\CategoryController::class, 'index']);//->name('list');
+
+        Route::resource('categories', App\Http\Controllers\CategoryController::class)->name('index','categories.index');
     });
 });
 
 
 
-Route::resource('categories', App\Http\Controllers\CategoryController::class);//->name('index','categories');
+
