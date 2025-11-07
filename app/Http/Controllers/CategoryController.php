@@ -59,7 +59,8 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
-            'description' => 'required'
+            'description' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
         if ($validator->fails()) {
 
@@ -70,6 +71,14 @@ class CategoryController extends Controller
         } else {
 
             $input = $request->all();
+
+            if ($request->hasFile('image')){
+
+                $input['image'] = $request->file('image')->store('uploads','public');
+                //$input['image'] = $img_path;
+            }
+
+
             $res = Category::create($input);
 
             return redirect()->route('categories.index')->with('success', 'Category created successfully.');
@@ -118,7 +127,8 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
-            'description' => 'required'
+            'description' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
         if ($validator->fails()) {
 
@@ -130,6 +140,15 @@ class CategoryController extends Controller
 
             $input = $request->all();
             $res = Category::find($id);
+
+            if ($request->hasFile('image')){
+
+                $input['image'] = $request->file('image')->store('uploads','public');
+
+                if (!empty($res->image) && file_exists(storage_path('app/public/'.$res->image))){
+                    unlink(storage_path('app/public/'.$res->image));
+                }
+            }
 
             $res->update($input);
 

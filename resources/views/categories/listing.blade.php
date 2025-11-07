@@ -55,6 +55,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>image</th>
                                 <th>Desc</th>
                                 <th>Actions</th>
                             </tr>
@@ -65,6 +66,7 @@
                                     <tr>
                                         <td>{{ $cat->id }}</td>
                                         <td>{{ $cat->name }}</td>
+                                        <td><img width="100" src="{{ asset('storage/'.$cat->image) }}"></td>
                                         <td>{{ $cat->description }}</td>
                                         <td>
                                           <form action="{{ route('categories.destroy',[$cat->id]) }}" method="post">

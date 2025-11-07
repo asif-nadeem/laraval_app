@@ -28,7 +28,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('categories.update',[$res->id]) }}" method="post">
+                        <form action="{{ route('categories.update',[$res->id]) }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             <div class="row mb-3">
@@ -36,6 +36,14 @@
                                     <label for="name">Name:</label>
                                     <input required type="text" class="form-control" id="name" placeholder="Enter Name"
                                            name="name" value="{{ old('name',$res->name) }}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="form-group">
+                                    <label for="image">Image:</label>
+                                    <input class="form-control" type="file" name="image" id="image">
+                                    <img width="100" src="{{ asset('storage/'.$res->image) }}">
                                 </div>
                             </div>
                             <div class="row mb-3">
