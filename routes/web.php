@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
 
         //use resource
         Route::resource('categories', App\Http\Controllers\CategoryController::class)->name('index','categories.index');
+
+        Route::resource('posts', App\Http\Controllers\PostsController::class)->name('index','posts.index');
     });
 });
 

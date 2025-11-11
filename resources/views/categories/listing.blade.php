@@ -9,7 +9,7 @@
                     <div class="col-md-6">
                         <div class="col-md-12">
                             <form action="">
-{{--                                @csrf--}}
+                                {{--                                @csrf--}}
                                 <div class="mb-3">
                                     <div class="form-group">
                                         {{--                            <label for="cat_name">Cat Name:</label>--}}
@@ -45,11 +45,11 @@
                                 <p>{{ session('success') }}</p>
                             </div>
                         @endif
-                            @if(session('error'))
-                                <div class="alert alert-danger">
-                                    <p>{{ session('error') }}</p>
-                                </div>
-                            @endif
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                <p>{{ session('error') }}</p>
+                            </div>
+                        @endif
                         <table id="ex" class="table table-striped table-bordered">
                             <thead class="table-dark">
                             <tr>
@@ -57,6 +57,7 @@
                                 <th>Name</th>
                                 <th>image</th>
                                 <th>Desc</th>
+                                <th>Posts</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -69,13 +70,38 @@
                                         <td><img width="100" src="{{ asset('storage/'.$cat->image) }}"></td>
                                         <td>{{ $cat->description }}</td>
                                         <td>
-                                          <form action="{{ route('categories.destroy',[$cat->id]) }}" method="post">
+                                            <table>
+                                                <tr>
+                                                    <th>post name</th>
+                                                </tr>
+                                                @if($cat->posts->isNotEmpty())
+
+                                                    @foreach($cat->posts as $post)
+                                                        <tr>
+                                                            <td>{{$post->name}}</td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                @else
+                                                    <tr>
+                                                        <td>no post found!</td>
+                                                    </tr>
+                                                @endif
+                                            </table>
+                                        </td>
+
+                                        <td>
+                                            <form action="{{ route('categories.destroy',[$cat->id]) }}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                          <a class="btn btn-primary" href="{{ route('categories.edit',[$cat->id]) }}">Edit</a>
-                                          <a class="btn btn-info" href="{{ route('categories.show',[$cat->id]) }}">Details</a>
+                                                <a class="btn btn-primary"
+                                                   href="{{ route('categories.edit',[$cat->id]) }}">Edit</a>
+                                                <a class="btn btn-info"
+                                                   href="{{ route('categories.show',[$cat->id]) }}">Details</a>
 
-                                                <button onclick="return confirm_del();" class="btn btn-danger" type="submit">Delete</button>
+                                                <button onclick="return confirm_del();" class="btn btn-danger"
+                                                        type="submit">Delete
+                                                </button>
 
                                             </form>
                                         </td>
@@ -91,7 +117,7 @@
 
                         @if(!empty($categories))
                             {!! $categories->links('pagination::bootstrap-4') !!}
-{{--                            {!! $categories->links() !!}--}}
+                            {{--                            {!! $categories->links() !!}--}}
                         @endif
                     </div>
                 </div>

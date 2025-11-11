@@ -17,6 +17,8 @@ class CategoryController extends Controller
 
         $query = Category::query();
 
+        $query->with(['posts']);
+
         if ($request->filled('cat_name')) {
 //            //$data['categories'] = Category::where('name','=',$request->input('cat_name'))->get();
 //            $data['categories'] = Category::where('name','=',$request->input('cat_name'))->get();
@@ -31,6 +33,8 @@ class CategoryController extends Controller
             $data['desc'] = $request->desc;
             $query->where('description', 'LIKE', '%' . $request->desc . '%');
         }
+
+
 
         $query->orderBy('id', 'desc');
 

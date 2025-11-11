@@ -18,6 +18,14 @@
                     </a>
                 </li>
             @endif
+                @if (Route::has('posts.index'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('posts') ? 'active' : '' }}" href="{{ route('posts.index') }}">
+                            <i class="fa fa-list"></i>
+                            Posts
+                        </a>
+                    </li>
+                @endif
             @if (Route::has('settings'))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('settings') ? 'active' : '' }}" href="#">
