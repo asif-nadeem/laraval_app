@@ -69,26 +69,27 @@
                                         <td>{{ $cat->name }}</td>
                                         <td><img width="100" src="{{ asset('storage/'.$cat->image) }}"></td>
                                         <td>{{ $cat->description }}</td>
-                                        <td>
-                                            <table>
-                                                <tr>
-                                                    <th>post name</th>
-                                                </tr>
-                                                @if($cat->posts->isNotEmpty())
+                                        <td>{{ $cat->posts->count() }}</td>
+{{--                                        <td>--}}
+{{--                                            <table>--}}
+{{--                                                <tr>--}}
+{{--                                                    <th>post name</th>--}}
+{{--                                                </tr>--}}
+{{--                                                @if($cat->posts->isNotEmpty())--}}
 
-                                                    @foreach($cat->posts as $post)
-                                                        <tr>
-                                                            <td>{{$post->name}}</td>
-                                                        </tr>
-                                                    @endforeach
+{{--                                                    @foreach($cat->posts as $post)--}}
+{{--                                                        <tr>--}}
+{{--                                                            <td>{{$post->name}}</td>--}}
+{{--                                                        </tr>--}}
+{{--                                                    @endforeach--}}
 
-                                                @else
-                                                    <tr>
-                                                        <td>no post found!</td>
-                                                    </tr>
-                                                @endif
-                                            </table>
-                                        </td>
+{{--                                                @else--}}
+{{--                                                    <tr>--}}
+{{--                                                        <td>no post found!</td>--}}
+{{--                                                    </tr>--}}
+{{--                                                @endif--}}
+{{--                                            </table>--}}
+{{--                                        </td>--}}
 
                                         <td>
                                             <form action="{{ route('categories.destroy',[$cat->id]) }}" method="post">

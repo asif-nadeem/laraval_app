@@ -7,7 +7,7 @@
                 <div class="row mb-2">
                     <div class="col-md-6">&nbsp;</div>
                     <div class="col-md-6">
-                        <a class="btn btn-primary" style="float: right" href="{{ route('categories.index') }}">Back</a>
+                        <a class="btn btn-primary" style="float: right" href="{{ route('posts.index') }}">Back</a>
                     </div>
                 </div>
                 <div class="card">
@@ -19,6 +19,7 @@
                             <tr>
                                 <th>ID</th> <td>{{ $result->id }}</td>
                                 <th>Name</th> <td>{{ $result->name }}</td>
+                                <th>Category</th> <td><td>{{ $result->cat->name }}</td></td>
                                 <th>Desc</th> <td>{{ $result->description }}</td>
                             </tr>
                         </table>

@@ -17,7 +17,7 @@ class CategoryController extends Controller
 
         $query = Category::query();
 
-        $query->with(['posts']);
+        $query->withCount(['posts']);
 
         if ($request->filled('cat_name')) {
 //            //$data['categories'] = Category::where('name','=',$request->input('cat_name'))->get();
@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
         $query->orderBy('id', 'desc');
 
-        $data['categories'] = $query->paginate(4);
+        $data['categories'] = $query->paginate(12);
 
         return view('categories.listing', $data);
     }
@@ -98,7 +98,7 @@ class CategoryController extends Controller
     {
         $title = 'Category Details';
 
-        $result = Category::find($id);
+        $result = Category::with(['posts'])->find($id);
 
 //        $result2 = Category::where('id','=',$id)->get();
 //
@@ -128,7 +128,6 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:100',
             'description' => 'required',

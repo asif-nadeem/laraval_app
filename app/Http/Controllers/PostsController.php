@@ -76,6 +76,11 @@ class PostsController extends Controller
     public function show(string $id)
     {
         //
+        $title = 'Post Details';
+
+        $result = Post::with(['cat'])->find($id);
+
+        return view('posts.details', compact('title', 'result'));
     }
 
     /**
@@ -84,6 +89,12 @@ class PostsController extends Controller
     public function edit(string $id)
     {
         //
+        $data['title'] = 'Edit post';
+
+        $data['categories'] = Category::all();
+        $data['res'] = Post::find($id);
+
+        return view('posts.edit',$data);
     }
 
     /**
@@ -92,6 +103,38 @@ class PostsController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100',
+            'description' => 'nullable',
+            'status' => 'required',
+            'category_id' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+
+            //$data['errors']  = $validator->errors();
+            //return view('categories.create',$data);
+        } else {
+
+            $input = $request->all();
+            $res = Post::find($id);
+
+            if ($request->hasFile('image')){
+
+                $input['image'] = $request->file('image')->store('uploads','public');
+
+                if (!empty($res->image) && file_exists(storage_path('app/public/'.$res->image))){
+                    unlink(storage_path('app/public/'.$res->image));
+                }
+            }
+
+            $res->update($input);
+
+            return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+
+        }
     }
 
     /**
@@ -100,5 +143,15 @@ class PostsController extends Controller
     public function destroy(string $id)
     {
         //
+        $res = Post::find($id);
+        if (!empty($res->image) && file_exists(storage_path('app/public/'.$res->image))){
+            unlink(storage_path('app/public/'.$res->image));
+        }
+        $ress = $res->delete();
+        if ($ress) {
+            return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        }else{
+            return redirect()->route('posts.index')->with('error', 'Post not deleted successfully.');
+        }
     }
 }
