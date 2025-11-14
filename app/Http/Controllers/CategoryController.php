@@ -169,6 +169,9 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $res = Category::find($id);
+        if ($res->posts()->exists()) {
+            return back()->with('error', 'Cannot delete category with existing posts.');
+        }
         if (!empty($res->image) && file_exists(storage_path('app/public/'.$res->image))){
             unlink(storage_path('app/public/'.$res->image));
         }
