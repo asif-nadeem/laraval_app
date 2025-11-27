@@ -20,14 +20,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'login_form'])->name('login');
+//before admin login
+Route::prefix('admin')->group(function () {
+    Route::get('/', [App\Http\Controllers\AdminsController::class, 'showLoginForm'])->name('admin.login');
+    Route::get('/login', [App\Http\Controllers\AdminsController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [App\Http\Controllers\AdminsController::class, 'login'])->name('admin.login.post');
+});
+
+//after login admin
+Route::middleware(['admin'])->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\AdminsController::class, 'dashboard'])->name('admin.dashboard');
+        Route::post('/logout', [App\Http\Controllers\AdminsController::class, 'logout'])->name('admin.logout');
+        Route::resource('categories', App\Http\Controllers\CategoryController::class)->name('index','categories.index');
+        Route::resource('posts', App\Http\Controllers\PostsController::class)->name('index','posts.index');
+    });
+});
+
+//user login (can be use as user end)
 Route::middleware(['web'])->group(function () {
     Route::prefix('user')->group(function () {
         Auth::routes();
     });
 });
-
-
 Route::middleware(['auth'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -47,9 +62,9 @@ Route::middleware(['auth'])->group(function () {
 //        Route::get('/categories/show/{id}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');
 
         //use resource
-        Route::resource('categories', App\Http\Controllers\CategoryController::class)->name('index','categories.index');
-
-        Route::resource('posts', App\Http\Controllers\PostsController::class)->name('index','posts.index');
+//        Route::resource('categories', App\Http\Controllers\CategoryController::class)->name('index','categories.index');
+//
+//        Route::resource('posts', App\Http\Controllers\PostsController::class)->name('index','posts.index');
     });
 });
 

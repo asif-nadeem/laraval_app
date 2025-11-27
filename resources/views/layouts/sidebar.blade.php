@@ -1,10 +1,10 @@
 <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
     <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-            @if (Route::has('home'))
+            @if (Route::has('admin.dashboard'))
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}"
-                       href="{{ route('home') }}">
+                       href="{{ route('admin.dashboard') }}">
                         <i class="fa fa-home"></i>
                         Dashboard
                     </a>
